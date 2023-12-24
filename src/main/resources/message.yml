@@ -1,0 +1,66 @@
+message:
+  prefix: "&a[Auth] "
+  login:
+    message: "&aInicia session usando: /login <clave>"
+    arguments: "&cFaltan argumentos, usa /login <clave>"
+    wrong: "&cClave incorrecta, vuelva a intentarlo."
+    kick: "&cClave incorrecta."
+    already: "&aYa estas logeado."
+    sucess: "&aTe has logeado correctamente."
+  logout:
+    sucess: "&aCerraste seccion correctamente."
+    error: "&cPrimero debes estar logeado para usar este comando."
+  register:
+    message: "&aRegistrate usando: /register <clave> <clave>"
+    arguments: "&cFaltan argumentos, usa: /register <clave> <clave>"
+    error: "&cLas claves no coinciden, asegurate de escribirlo correctamente."
+    shortpass: "&cTu clave es muy corta, ingresa una con más digitos."
+    sucess: "&aTe has registrado correctamente."
+    max_acount: "&aHas excedido el limite de usuarios por ip."
+  unregister:
+    message: "&aUsa: /unregister <nick>"
+    arguments: "&cFaltan argumentos, usa: /unregister <nick>"
+    error: "&cEste usuario no existe en la base de datos."
+    sucess: "&aUsuario unregistrado correctamente"
+    pass: "&cLa clave nueva es %clave%."
+  premium:
+    sucess: "&aAutenticación premium correcta."
+    error: "&cError al comprobar tu cuenta premium."
+    check: "&aTu cuenta ahora es premium, ya no necesitas usar la clave."
+    wrong: "&cTu cuenta no es premium."
+    arguments: "&cFaltan argumentos, usa: /unpremium <nick>"
+    kick: "&aCuenta premium activada."
+    disallow: "&aHas desactivado el modo premium correctamente."
+    disallow_other: "&aSe ha desactivado el modo premium de %player%"
+    disallow_other_error: "El jugador %player% no es un usuario premium o no existe."
+  changepass:
+    message: "&cUsa: /changepassword <clave-vieja> <clave-nueva> para cambiar tu clave."
+    arguments: "&cFaltan argumentos, usa: /changepassword <clave-vieja> <clave-nueva>"
+    wrong: "&cLa clave antigua no coincide con la que escribiste."
+    short: "&cLa clave nueva es muy corta, intenta denuevo."
+    sucess: "&aClave actualizada correctamente."
+  kick:
+    blacklistip: "&cTu ip no esta permitida en el server"
+    blacklistname: "&cTu nick no esta permitido en el server"
+    blacklistuuid: "&cTu cuenta no esta permitida en el server"
+  commands:
+    info:
+      use: "&aUsa /info <player>"
+      error: "&cEse jugador no existe en la base de datos."
+      message:
+        - "&6&m------[Info of %player%]-------"
+        - "&6IP: &8%ip%"
+        - "&6Ultima Conexion: %lastcon%"
+        - "&6Cuentas: %accounts%"
+        - "&6Premium: %premium%"
+        - "&6&m-------------------------------"
+    accounts:
+      use: "&aUsa /accounts <player>"
+      error: "&cEse jugador no existe en la base de datos."
+      header: "&6&m------[Accounts of %player%]-------"
+      message:
+        - "&a%index% . %account%  - %lastcon%"
+      footer: "&6&m-------------------------------"
+  capchat_message: "&cDebes completar el capchat para usar este comando."
+  commanddeny: "&cDebes estar logeado para ejecutar este comando."
+  nopermission: "&cNo tienes permiso para ejecutar este comando."

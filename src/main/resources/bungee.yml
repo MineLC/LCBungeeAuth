@@ -1,0 +1,5 @@
+name: LCBungeeAuth
+version: 2.0
+main: lc.bungeeauth.LCBungeeAuth
+depends:
+  - LCBungeeCore

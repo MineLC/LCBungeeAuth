@@ -1,0 +1,48 @@
+config:
+  mysql:
+    host: "localhost"
+    port: "3306"
+    user: "root"
+    pass: ""
+    database: "BungeeAuth"
+    authtable: "Auth"
+  auth:
+    ##si es "true" los jugadores "no premium" seran verificados, si su ultima ip coincide con la que se está conectando
+    ## el login es automatico.
+    autoverification: "true"
+    ## si es "true" el jugador sera kickeado si escribe una contraseña erronea.
+    kickwrong_pass: "true"
+    ##si el valor de "kickwrong_pass" es falso, puedes determinar la cantidad de intentos que tenga el usuario
+    ## para poder escribir correctamente la contraseña antes de ser kickeado.
+    maxtry: "6"
+    ##Escribe el numero minimo de caracteres que puede tener una contraseña
+    minpasslenght: "5"
+    ##Si es "true" el server enviará varios mensajes al jugador pidiendo que digite su contraseña.
+    login_spam: "true"
+    register_spam: "true"
+    spam_delay: "4"
+    premium_kick: "true"
+    change_pass:
+      ##Si es "true" el jugador tendrá que digitar su clave antigua para poder cambiar a una nueva clave.
+      oldpassverify: "true"
+    ## escribir el nombre del servidor que será usado para el registro y logeo de usuarios, recuerda que debe ser
+    ## igual al del config.yml del bungee.
+    noprem_lobby: "AuthLobby"
+    ## escribe el nombre de la lobby general donde los usuarios entrarán luego de logearse.
+    lobby: "Lobby1"
+    maxregisters_per_ip: "5"
+    blacklistip:
+      - "192.168.0.1"
+    blacklistname:
+      - "notch"
+    blacklistuuid:
+      - "write_uuid"
+    ##Si es "true" se aplicará un cifrado para para contraseñas e IPs.
+    encrypt: "true"
+    ##Llave de cifrado unico para las IP's.
+    secretkey: "4CTzUv"
+  unregister:
+    #si es "true", cuando un admin unregistre a un usuario, se generara una clave automatica, la cual le sera otorgada
+    #al admin que utilizo el comando y se la tendrá que mandar al usuario para que pueda entrar.
+    #Si es "false" la clave del usuario es eliminada, y cuando el usuario entre al servidor tendrá que registrarse nuevamente.
+    adminmode: true
