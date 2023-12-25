@@ -4,7 +4,9 @@ import lc.bungeeauth.LCBungeeAuth;
 import lc.bungeeauth.database.Database;
 import lc.bungeeauth.managers.AuthManager;
 import lc.bungeeauth.managers.AuthPlayer;
+import lc.bungeecore.utilidades.Util;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
@@ -28,6 +30,7 @@ public class Events implements Listener {
         LCBungeeAuth.getInstance().getProxy().getScheduler().runAsync((Plugin)LCBungeeAuth.getInstance(), new Runnable() {
             public void run() {
                 try {
+
                     final AuthPlayer jug = AuthPlayer.getAuthPlayer(name);
                     jug.setIp(e.getConnection().getAddress().getHostString());
                     Database.loadAuthPlayerInfo(e.getConnection().getName());
@@ -36,7 +39,7 @@ public class Events implements Listener {
                         
                         return;
                     }
-                    if(e.getConnection().getAddress().getHostString().equals(jug.getLastip())){
+                    if(e.getConnection().getAddress().getHostString().equals(jug.getLastip()) && Database.hasPassword(name)){
                         jug.setAuthverify(true);
                         jug.setCaptcha(true);
                     }
@@ -55,7 +58,10 @@ public class Events implements Listener {
         }
         if(e.getSender() instanceof ProxiedPlayer){
             AuthPlayer ap = AuthPlayer.getAuthPlayer(((ProxiedPlayer) e.getSender()).getName());
-            if(!(ap.isRegister() || ap.isAuthverify())){
+            if(!(ap.isRegister() || ap.isAuthverify()) && !(e.getMessage().toLowerCase().startsWith("/captcha") ||
+                    !e.getMessage().toLowerCase().startsWith("/register") ||
+                    !e.getMessage().toLowerCase().startsWith("/login"))){
+                e.setCancelled(true);
                 ap.getProxyPlayer().sendMessage(LCBungeeAuth.getInstance().getMessagebyString("message.commanddeny"));
             }
 
@@ -76,7 +82,8 @@ public class Events implements Listener {
                 }
                 return;
             }
-            if(e.getPlayer().getPendingConnection().getAddress().getHostString().equals(jug.getLastip())){
+            System.out.println( Database.hasPassword(jug.getName()));
+            if(e.getPlayer().getPendingConnection().getAddress().getHostString().equals(jug.getLastip()) && Database.hasPassword(jug.getName())){
                 jug.setAuthverify(true);
                 jug.setCaptcha(true);
                 jug.setLastip(e.getPlayer().getPendingConnection().getAddress().getHostString());
@@ -92,6 +99,8 @@ public class Events implements Listener {
         if(e.getTag().equalsIgnoreCase("captcha:channel")){
            AuthPlayer ap = AuthPlayer.getAuthPlayer(e.getReceiver().toString());
            ap.setCaptcha(true);
+           if(!ap.isRegister()) ap.getProxyPlayer().sendMessage(LCBungeeAuth.getInstance().getMessagebyString("message.register.message"));
+           else ap.getProxyPlayer().sendMessage(LCBungeeAuth.getInstance().getMessagebyString("message.login.message"));
         }
     }
 
@@ -115,11 +124,11 @@ public class Events implements Listener {
          else if(AuthManager.getBlacklistip().contains(e.getPlayer().getPendingConnection().getAddress().getHostString())){
              e.getPlayer().disconnect(LCBungeeAuth.getInstance().getMessagebyString("message.kick.blacklistip"));
             } else {
-                if(!jug.isRegister()){
+                if(!jug.isRegister() && jug.isCaptcha()){
                     jug.getProxyPlayer().sendMessage(LCBungeeAuth.getInstance().getMessagebyString("message.register.message"));
                     return;
                 }
-                if(jug.isAuthverify() || jug.isPremium()){
+                if((jug.isAuthverify() || jug.isPremium()) && jug.isCaptcha()){
                     e.setTarget(AuthManager.getLobbyServer());
                     if (e.getPlayer().getPendingConnection().isOnlineMode()) {
                         jug.setAuthverify(true);
@@ -127,7 +136,10 @@ public class Events implements Listener {
                         return;
                     }
                     e.getPlayer().sendMessage(LCBungeeAuth.getInstance().getMessagebyString("message.login.sucess"));
-                } else {
+                } else if (!jug.isCaptcha()){
+                    e.getPlayer().sendMessage(Util.color("&aCompleta el captcha."));
+
+                }else {
                     e.getPlayer().sendMessage(LCBungeeAuth.getInstance().getMessagebyString("message.login.message"));
 
                 }

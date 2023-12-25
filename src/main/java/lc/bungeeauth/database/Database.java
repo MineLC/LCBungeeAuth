@@ -66,6 +66,47 @@ public class Database {
         }
     }
 
+    public static boolean hasPassword(String name){
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Connection thiscon = plugin.getConnection();
+        try {
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.append("SELECT * ");
+            queryBuilder.append("FROM `").append(LCBungeeAuth.getInstance().authtable).append("` ");
+            queryBuilder.append("WHERE `Player` = ?;");
+            preparedStatement = thiscon.prepareStatement(queryBuilder.toString());
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return resultSet.getString("Password") != null;
+            }
+            return false;
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        } finally {
+            if (resultSet != null)
+                try {
+                    resultSet.close();
+                } catch (SQLException ignored) {
+                    ignored.printStackTrace();
+                }
+            if (preparedStatement != null)
+                try {
+                    preparedStatement.close();
+                } catch (SQLException ignored) {
+                    ignored.printStackTrace();
+                }
+            if(thiscon != null)
+                try {
+                    thiscon.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
+        }
+        return false;
+    }
+
     public static void createAuthPlayer(String name) {
         Connection thiscon = plugin.getConnection();
         try {
